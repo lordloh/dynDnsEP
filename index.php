@@ -6,6 +6,8 @@ if ( !empty($_REQUEST["SIG"]) && !empty($_REQUEST["HOST"]) && !empty($_REQUEST["
 	}else{
 		echo "Verification Failed\n";
 	}
+}else{
+	echo "Nothing received";
 }
 
 function verifySig($sig, $host, $timeStamp){
@@ -40,19 +42,28 @@ function updateZoneFile($IP){
 
 function updateHostIPFile($hostName,$timestamp){
 	$IPFile=file_get_contents('hostIP.json');
-	if (!$IPFile){
-		echo "IP File not found\n";
-		return FALSE;
-	}else{
-		$IPDB==json_decode($IPFile,TRUE);
-		if ($IPDB[$hostName]["ip"]==$_SERVER["REMOTE_ADDR"]){
-		}else{
-			$IPDB[$hostName]=$_SERVER["REMOTE_ADDR"];
-			updateZoneFile($IPDB);
-		}
-		$IPDB[$hostName]["timestamp"]=time();
-		dbg(json_encode($IPDB));
+	dbg($IPFile);
+	if (!$IPFile){	// IP file does not exist.
+		$IPFile='{"'.$hostName.'":{"ip":"","timestamp":"0"}}';		// Generate a blank file.
 	}
+	$IPDB=json_decode($IPFile,TRUE);
+	if(!array_key_exists($hostName,$IPDB) ){		// if hostname does not exist create it.
+		$IPDB[$hostName]["ip"]="";
+		$IPDB[$hostName]["timestamp"]=0;
+	}
+
+	
+	if ($IPDB[$hostName]["ip"]==$_SERVER["REMOTE_ADDR"]){	// the IP Address has not changed.
+		echo "NOT CHANGED";
+	}else{	// the IP address has changed.
+		$IPDB[$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];
+		updateZoneFile($IPDB);
+		echo "CHANGED";
+	}
+	$IPDB[$hostName]["timestamp"]=time();
+	$IPFile=json_encode($IPDB);
+	file_put_contents('hostIP.json', $IPFile);
+	dbg($IPFile);
 }
 
 function getSharedKey($hostName){
