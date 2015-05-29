@@ -43,27 +43,21 @@ function updateZoneFile($IP){
 function updateHostIPFile($hostName,$timestamp){
 	$IPFile=file_get_contents('hostIP.json');
 	dbg($IPFile);
-	if (!$IPFile){	// IP file does not exist.
+	if (!$IPFile){											// IP file does not exist.
 		$IPFile='{"'.$hostName.'":{"ip":"","timestamp":"0"}}';		// Generate a blank file.
 	}
 	$IPDB=json_decode($IPFile,TRUE);
-	if(!array_key_exists($hostName,$IPDB) ){		// if hostname does not exist create it.
+	if(!array_key_exists($hostName,$IPDB) ){				// if hostname does not exist create it.
 		$IPDB[$hostName]["ip"]="";
 		$IPDB[$hostName]["timestamp"]=0;
+	}	
+	if ($IPDB[$hostName]["ip"]!=$_SERVER["REMOTE_ADDR"]){	// if the IP Address has changed,
+		$IPDB[$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];		// update it.
+		updateZoneFile($IPDB);								// Update the zone file;
 	}
-
-	
-	if ($IPDB[$hostName]["ip"]==$_SERVER["REMOTE_ADDR"]){	// the IP Address has not changed.
-		echo "NOT CHANGED";
-	}else{	// the IP address has changed.
-		$IPDB[$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];
-		updateZoneFile($IPDB);
-		echo "CHANGED";
-	}
-	$IPDB[$hostName]["timestamp"]=time();
+	$IPDB[$hostName]["timestamp"]=time();					// update time stamp irrespective of ip change to detect stale ip addresses.
 	$IPFile=json_encode($IPDB);
 	file_put_contents('hostIP.json', $IPFile);
-	dbg($IPFile);
 }
 
 function getSharedKey($hostName){
