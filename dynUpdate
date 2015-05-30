@@ -9,3 +9,5 @@ OP="$(echo -ne $VS| sha256sum | head -c64)";
 PS="HOST=$HOST&SIG=$OP&TS=$TS"
 #echo "==============="
 curl --data $PS $ENDPOINT
+echo "\n"
+echo $PS

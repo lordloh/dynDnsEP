@@ -1,4 +1,15 @@
 <?php
+$CFG=Array("ORIGIN"=>"h.lohray.com",
+			"TTL"=>6,
+			"NS"=>"ns",
+			"email"=>"bharath.lohray.com",
+			"refresh"=>30,
+			"retry"=>20,
+			"expiry"=>3600,
+			"nx"=>6,
+			"zoneFile"=>"/var/cache/bind/h.lohray.com.zone"
+	);
+
 if ( !empty($_REQUEST["SIG"]) && !empty($_REQUEST["HOST"]) && !empty($_REQUEST["TS"]) ){
 	if ( verifySig( $_REQUEST["SIG"], $_REQUEST["HOST"], $_REQUEST["TS"] ) ) {
 		updateHostIPFile($_REQUEST["HOST"]);
@@ -37,12 +48,26 @@ function verifySig($sig, $host, $timeStamp){
 }
 
 function updateZoneFile($IP){
-
+	$CFG=$GLOBALS["CFG"];
+	$zoneFileHead="\$ORIGIN ".$CFG["ORIGIN"]."\n\$".
+	"TTL ".$CFG["TTL"]."s\n".
+	"@\tIN\tSOA\t".$CFG["NS"].".".$CFG["ORIGIN"].".\t".$CFG["email"]."(\n".
+	"\t1\n".
+	"\t".$CFG["refresh"]."\n".
+	"\t".$CFG["retry"]."\n".
+	"\t".$CFG["expiry"]."\n".
+	"\t".$CFG["nx"]."\n".
+	")\n".
+	"@\tIN NS ".$CFG["NS"]."\n";
+	$zoneFileBody='';
+	foreach($IP as $hostName=>$record){
+		$zoneFileBody.=$hostName." IN A ".$record["ip"]."\n";
+	}
+	file_put_contents($CFG["zoneFile"], $zoneFileHead."\n".$zoneFileBody);
 }
 
 function updateHostIPFile($hostName,$timestamp){
 	$IPFile=file_get_contents('hostIP.json');
-	dbg($IPFile);
 	if (!$IPFile){											// IP file does not exist.
 		$IPFile='{"'.$hostName.'":{"ip":"","timestamp":"0"}}';		// Generate a blank file.
 	}
@@ -50,7 +75,7 @@ function updateHostIPFile($hostName,$timestamp){
 	if(!array_key_exists($hostName,$IPDB) ){				// if hostname does not exist create it.
 		$IPDB[$hostName]["ip"]="";
 		$IPDB[$hostName]["timestamp"]=0;
-	}	
+	}
 	if ($IPDB[$hostName]["ip"]!=$_SERVER["REMOTE_ADDR"]){	// if the IP Address has changed,
 		$IPDB[$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];		// update it.
 		updateZoneFile($IPDB);								// Update the zone file;
@@ -64,7 +89,7 @@ function getSharedKey($hostName){
 	// Read file, Find host name, Return shared key or false
 	$keyFile=file_get_contents('keyFile.json');
 	if (!$keyFile){
-		echo "Key File Missing\n";
+		echo "Key File Missing\n"; 
 		return FALSE;
 	}else{
 		$keyDB=json_decode($keyFile,TRUE);

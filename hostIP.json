@@ -1,6 +1,4 @@
 {
-	"ratnavali":{
-	"ip":"192.168.144.10",
-	"timestamp":100
-	}
+    "ns":{"ip":"50.19.103.190","timestamp":0},
+    "ratnavali":{"ip":"192.168.144.11","timestamp":1432985122}
 }
