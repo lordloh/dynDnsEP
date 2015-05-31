@@ -52,7 +52,7 @@ function updateZoneFile($IP){
 	$zoneFileHead="\$ORIGIN ".$CFG["ORIGIN"]."\n\$".
 	"TTL ".$CFG["TTL"]."s\n".
 	"@\tIN\tSOA\t".$CFG["NS"].".".$CFG["ORIGIN"].".\t".$CFG["email"]."(\n".
-	"\t1\n".
+	"\t".$IP["serial"]."\n".
 	"\t".$CFG["refresh"]."\n".
 	"\t".$CFG["retry"]."\n".
 	"\t".$CFG["expiry"]."\n".
@@ -60,7 +60,7 @@ function updateZoneFile($IP){
 	")\n".
 	"@\tIN NS ".$CFG["NS"]."\n";
 	$zoneFileBody='';
-	foreach($IP as $hostName=>$record){
+	foreach($IP["records"] as $hostName=>$record){
 		$zoneFileBody.=$hostName." IN A ".$record["ip"]."\n";
 	}
 	file_put_contents($CFG["zoneFile"], $zoneFileHead."\n".$zoneFileBody);
@@ -69,15 +69,16 @@ function updateZoneFile($IP){
 function updateHostIPFile($hostName,$timestamp){
 	$IPFile=file_get_contents('hostIP.json');
 	if (!$IPFile){											// IP file does not exist.
-		$IPFile='{"'.$hostName.'":{"ip":"","timestamp":"0"}}';		// Generate a blank file.
+		$IPFile='{"serial":1,"records":{"'.$hostName.'":{"ip":"","timestamp":"0"}}}';		// Generate a blank file.
 	}
 	$IPDB=json_decode($IPFile,TRUE);
-	if(!array_key_exists($hostName,$IPDB) ){				// if hostname does not exist create it.
-		$IPDB[$hostName]["ip"]="";
-		$IPDB[$hostName]["timestamp"]=0;
+	if(!array_key_exists($hostName,$IPDB["records"]) ){				// if hostname does not exist create it.
+		$IPDB["records"][$hostName]["ip"]="";
+		$IPDB["records"][$hostName]["timestamp"]=0;
 	}
-	if ($IPDB[$hostName]["ip"]!=$_SERVER["REMOTE_ADDR"]){	// if the IP Address has changed,
-		$IPDB[$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];		// update it.
+	if ($IPDB["records"][$hostName]["ip"]!=$_SERVER["REMOTE_ADDR"]){	// if the IP Address has changed,
+		$IPDB["records"][$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];		// update it.
+		$IPDB["serial"]++;
 		updateZoneFile($IPDB);								// Update the zone file;
 	}
 	$IPDB[$hostName]["timestamp"]=time();					// update time stamp irrespective of ip change to detect stale ip addresses.

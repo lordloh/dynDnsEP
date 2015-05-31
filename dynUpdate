@@ -4,7 +4,6 @@ SHARED_KEY=123
 ENDPOINT="http://lohray.com/dynDnsEP/"
 TS=$(date +%s)
 VS=$HOST$TS$SHARED_KEY
-#echo $VS
 OP="$(echo -ne $VS| sha256sum | head -c64)";
 PS="HOST=$HOST&SIG=$OP&TS=$TS"
 curl --data $PS $ENDPOINT
