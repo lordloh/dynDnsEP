@@ -50,13 +50,13 @@ To get one up and running, you need to install apache web server, bind9 dns serv
 
 7. Now, `apache` needs to get  the `bind9` service to reload the zone records. This needs the apache process to be able to execute `sudo service bind9 reload` without the password. Apache can be granted this permission by `sudoers` file.
 
-    * Run `sudo visudo`
+  * Run `sudo visudo`
 
-    * add `www-data ALL=(ALL) NOPASSWD: /usr/sbin/service bind9 reload`.
+  * add `www-data ALL=(ALL) NOPASSWD: /usr/sbin/service bind9 reload`.
 
-    * add `Defaults:www-data !requiretty` - this allows `sudo` to run without a `TTY`.
+  * add `Defaults:www-data !requiretty` - this allows `sudo` to run without a `TTY`.
 
-    * With changed permission, you need to stop and start tho apache web server - `sudo service apache2 stop` and `sudo service apache2 start`.
+  * With changed permission, you need to stop and start tho apache web server - `sudo service apache2 stop` and `sudo service apache2 start`.
 
 8. Modify the `keyFile.json`. This file has the shared keys to prevent unauthorized users from updating a record.
 
