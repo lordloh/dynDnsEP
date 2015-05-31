@@ -6,6 +6,6 @@ TS=$(date +%s)
 VS=$HOST$TS$SHARED_KEY
 OP="$(echo -ne $VS| sha256sum | head -c64)";
 PS="HOST=$HOST&SIG=$OP&TS=$TS"
-curl --data $PS $ENDPOINT
+curl --silent --data $PS $ENDPOINT
 echo -e ''
 
