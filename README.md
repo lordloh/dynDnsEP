@@ -49,7 +49,6 @@ To get one up and running, you need to install apache web server, bind9 dns serv
     ```
 
 7. Now, `apache` needs to get  the `bind9` service to reload the zone records. This needs the apache process to be able to execute `sudo service bind9 reload` without the password. Apache can be granted this permission by `sudoers` file.
-
   * Run `sudo visudo`
 
   * add `www-data ALL=(ALL) NOPASSWD: /usr/sbin/service bind9 reload`.
