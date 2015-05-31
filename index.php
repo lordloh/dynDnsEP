@@ -1,8 +1,8 @@
 <?php
-$CFG=Array("ORIGIN"=>"h.lohray.com",
+$CFG=Array("ORIGIN"=>"h.lohray.com.",
 			"TTL"=>6,
 			"NS"=>"ns",
-			"email"=>"bharath.lohray.com",
+			"email"=>"bharath.lohray.com.",
 			"refresh"=>30,
 			"retry"=>20,
 			"expiry"=>3600,
