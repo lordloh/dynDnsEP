@@ -64,8 +64,7 @@ function updateZoneFile($IP){
 		$zoneFileBody.=$hostName." IN A ".$record["ip"]."\n";
 	}
 	file_put_contents($CFG["zoneFile"], $zoneFileHead."\n".$zoneFileBody);
-	$output=system("/usr/bin/sudo /usr/sbin/service bind9 reload ".$CFG["ORIGIN"]);
-	dbg($output);
+	system("/usr/bin/sudo /usr/sbin/service bind9 reload".$CFG["ORIGIN"],$output);
 }
 
 function updateHostIPFile($hostName,$timestamp){
@@ -80,7 +79,7 @@ function updateHostIPFile($hostName,$timestamp){
 	}
 	if ($IPDB[$hostName]["ip"]!=$_SERVER["REMOTE_ADDR"]){	// if the IP Address has changed,
 		$IPDB[$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];		// update it.
-		updateZoneFile($IPDB);											// Update the zone file;
+		updateZoneFile($IPDB);								// Update the zone file;
 	}
 	$IPDB[$hostName]["timestamp"]=time();					// update time stamp irrespective of ip change to detect stale ip addresses.
 	$IPFile=json_encode($IPDB);
