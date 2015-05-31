@@ -21,13 +21,13 @@ To get one up and running, you need to install apache web server, bind9 dns serv
 3. install `bind9`
 4. modify `/etc/bind/named.conf`. Add the following line - `include "/etc/bind/l2.example.com.zone";`
 5. create a file - `/etc/bind/l2.example.com.zone`. add the following lines -
-```
-zone "l2.example.com" IN {
-  type master;
-  file "l2.example.com.zoneRecords";
-  allow-update { none; };
-};
-```
+    ```
+    zone "l2.example.com" IN {
+      type master;
+      file "l2.example.com.zoneRecords";
+      allow-update { none; };
+    };
+    ```
 
 6. create a file `/var/cache/bind/l2.example.com.zoneRecords`. Add a `Start of Authority` or `SOA` section followed by `A` records. An example is given below -
 
@@ -60,15 +60,15 @@ zone "l2.example.com" IN {
 
 8. Modify the `keyFile.json`. This file has the shared keys to prevent unauthorized users from updating a record.
 
-```
-{
-        "host1":"alphaNumericSharedKey1",
-        "host2":"alphaNumericSharedKey2",
-        "host3":"alphaNumericSharedKey3"
-}
-```
+    ```
+    {
+            "host1":"alphaNumericSharedKey1",
+            "host2":"alphaNumericSharedKey2",
+            "host3":"alphaNumericSharedKey3"
+    }
+    ```
 
-9. To update a DNS record, run `./dynUpdate` on various host. On a home network, it upadates a name with the external IP address. Modify `dynUpdate` with the relavent configuration.
+9. To update a DNS record, run `./dynUpdate` on various host. On a home network, it updates a name with the external IP address. Modify `dynUpdate` with the relevant configuration.
 
 ```
 #! /bin/bash
