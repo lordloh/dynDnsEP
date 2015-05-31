@@ -51,7 +51,7 @@ function updateZoneFile($IP){
 	$CFG=$GLOBALS["CFG"];
 	$zoneFileHead="\$ORIGIN ".$CFG["ORIGIN"]."\n\$".
 	"TTL ".$CFG["TTL"]."s\n".
-	"@\tIN\tSOA\t".$CFG["NS"].".".$CFG["ORIGIN"].".\t".$CFG["email"]."(\n".
+	"@\tIN\tSOA\t".$CFG["NS"].".".$CFG["ORIGIN"]."\t".$CFG["email"]."(\n".
 	"\t".$IP["serial"]."\n".
 	"\t".$CFG["refresh"]."\n".
 	"\t".$CFG["retry"]."\n".
