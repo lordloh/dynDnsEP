@@ -64,7 +64,7 @@ function updateZoneFile($IP){
 		$zoneFileBody.=$hostName." IN A ".$record["ip"]."\n";
 	}
 	file_put_contents($CFG["zoneFile"], $zoneFileHead."\n".$zoneFileBody);
-	system("/usr/bin/sudo /usr/sbin/service bind9 reload".$CFG["ORIGIN"],$output);
+	exec("/usr/bin/sudo /usr/sbin/service bind9 reload",$outputS,$output);
 }
 
 function updateHostIPFile($hostName,$timestamp){
