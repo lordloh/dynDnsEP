@@ -70,15 +70,15 @@ To get one up and running, you need to install apache web server, bind9 dns serv
 
 9. To update a DNS record, run `./dynUpdate` on various host. On a home network, it updates a name with the external IP address. Modify `dynUpdate` with the relevant configuration.
 
-```
-#! /bin/bash
-HOST="<host1>"
-SHARED_KEY="<alphaNumericSharedKey1>"
-ENDPOINT="http://example.com/dynDnsEP/"
-TS=$(date +%s)
-VS=$HOST$TS$SHARED_KEY
-OP="$(echo -ne $VS| sha256sum | head -c64)";
-PS="HOST=$HOST&SIG=$OP&TS=$TS"
-curl --silent --data $PS $ENDPOINT
-echo -e ''
-```
+    ```
+    #! /bin/bash
+    HOST="<host1>"
+    SHARED_KEY="<alphaNumericSharedKey1>"
+    ENDPOINT="http://example.com/dynDnsEP/"
+    TS=$(date +%s)
+    VS=$HOST$TS$SHARED_KEY
+    OP="$(echo -ne $VS| sha256sum | head -c64)";
+    PS="HOST=$HOST&SIG=$OP&TS=$TS"
+    curl --silent --data $PS $ENDPOINT
+    echo -e ''
+    ```
