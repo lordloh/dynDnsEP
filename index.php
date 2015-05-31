@@ -79,9 +79,9 @@ function updateHostIPFile($hostName,$timestamp){
 	if ($IPDB["records"][$hostName]["ip"]!=$_SERVER["REMOTE_ADDR"]){	// if the IP Address has changed,
 		$IPDB["records"][$hostName]["ip"]=$_SERVER["REMOTE_ADDR"];		// update it.
 		$IPDB["serial"]++;
-		updateZoneFile($IPDB);								// Update the zone file;
+		updateZoneFile($IPDB);											// Update the zone file;
 	}
-	$IPDB[$hostName]["timestamp"]=time();					// update time stamp irrespective of ip change to detect stale ip addresses.
+	$IPDB["records"][$hostName]["timestamp"]=time();					// update time stamp irrespective of ip change to detect stale ip addresses.
 	$IPFile=json_encode($IPDB);
 	file_put_contents('hostIP.json', $IPFile);
 }
