@@ -31,13 +31,13 @@ function ago($time){
         $agoStr.=$hours.$hourStr;
         $largerMeasure=true;
     }
-    if (!($largerMeasure==false && $minutes!=0)){
+    if (!($largerMeasure==false && $minutes==0)){
         $agoStr.=$minutes.$minStr;
         $largerMeasure=true;
     }
-    if (!($largerMeasure==false && $seconds!=0)){
-        $agoStr.=$seconds.$secStr;
-        $largerMeasure==true;
+    if (!($largerMeasure==false && $seconds==0)){
+        $agoStr.=$seconds.$secStr." ago";
+        $largerMeasure=true;
     }
     if ($largerMeasure==false){
         $agoStr="now";
