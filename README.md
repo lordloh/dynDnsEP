@@ -78,3 +78,5 @@ To get one up and running, you need to install apache web server, bind9 dns serv
     curl --silent --data $PS $ENDPOINT
     echo -e ''
     ```
+
+10. visit `list.php` to view how long ago a host record was updated.
