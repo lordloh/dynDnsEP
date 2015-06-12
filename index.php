@@ -7,7 +7,8 @@ $CFG=Array("ORIGIN"=>"h.lohray.com.",
 			"retry"=>20,
 			"expiry"=>3600,
 			"nx"=>6,
-			"zoneFile"=>"/var/cache/bind/h.lohray.com.zone"
+			"zoneFile"=>"/var/cache/bind/h.lohray.com.zone",
+			"MX"=>true
 	);
 
 if ( !empty($_REQUEST["SIG"]) && !empty($_REQUEST["HOST"]) && !empty($_REQUEST["TS"]) ){
@@ -62,6 +63,10 @@ function updateZoneFile($IP){
 	$zoneFileBody='';
 	foreach($IP as $hostName=>$record){
 		$zoneFileBody.=$hostName." IN A ".$record["ip"]."\n";
+	}
+	foreach($IP as $hostName=>$record){
+		$zoneFileBody.="\$ORIGIN ".$hostName.$ORIGIN."\n";
+		$zoneFileBody.=" IN MX 10 ".$hostName."\n";
 	}
 	file_put_contents($CFG["zoneFile"], $zoneFileHead."\n".$zoneFileBody);
 	exec("/usr/bin/sudo /usr/sbin/service bind9 reload",$outputS,$output);
