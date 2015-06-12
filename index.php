@@ -70,8 +70,8 @@ function updateZoneFile($IP){
 	}
 	$zoneFileBody.=$GLOBALS["FIXED"];
 	foreach($IP as $hostName=>$record){
-		$zoneFileBody.="\$ORIGIN ".$hostName.".".$CFG["ORIGIN"]."\n";
-		$zoneFileBody.=" IN MX 10 ".$hostName."\n";
+		//$zoneFileBody.="\$ORIGIN ".$hostName.".".$CFG["ORIGIN"]."\n";
+		$zoneFileBody.=" IN MX 10 ".$hostName.".".$CFG["ORIGIN"]."\n";
 	}
 	file_put_contents($CFG["zoneFile"], $zoneFileHead."\n".$zoneFileBody);
 	exec("/usr/bin/sudo /usr/sbin/service bind9 reload",$outputS,$output);
