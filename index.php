@@ -10,9 +10,9 @@ $CFG=Array("ORIGIN"=>"h.lohray.com.",
 			"zoneFile"=>"/var/cache/bind/h.lohray.com.zone"
 	);
 
-$FIXED="akvwtu2u4f4uwqaky2osw743wdinjdrr._domainkey.h.lohray.com IN CNAME akvwtu2u4f4uwqaky2osw743wdinjdrr.dkim.amazonses.com.\n
-zea6r5idx7dcl7ivs5wgquzd7p5pc6xh._domainkey.h.lohray.com IN CNAME zea6r5idx7dcl7ivs5wgquzd7p5pc6xh.dkim.amazonses.com\n
-7otbaq4gbq5464me6mwuqed7rnydkh7u._domainkey.h.lohray.com IN CNAME 7otbaq4gbq5464me6mwuqed7rnydkh7u.dkim.amazonses.com\n
+$FIXED="akvwtu2u4f4uwqaky2osw743wdinjdrr._domainkey.h.lohray.com IN CNAME akvwtu2u4f4uwqaky2osw743wdinjdrr.dkim.amazonses.com.
+zea6r5idx7dcl7ivs5wgquzd7p5pc6xh._domainkey.h.lohray.com IN CNAME zea6r5idx7dcl7ivs5wgquzd7p5pc6xh.dkim.amazonses.com.
+7otbaq4gbq5464me6mwuqed7rnydkh7u._domainkey.h.lohray.com IN CNAME 7otbaq4gbq5464me6mwuqed7rnydkh7u.dkim.amazonses.com.
 _amazonses.h.lohray.com IN TXT \"2hycvKw7NaVW9t5vMkZcFvUgmLXCqIL1FULKtw4zsns=\"";
 
 if ( !empty($_REQUEST["SIG"]) && !empty($_REQUEST["HOST"]) && !empty($_REQUEST["TS"]) ){
