@@ -68,7 +68,7 @@ function updateZoneFile($IP){
 	foreach($IP as $hostName=>$record){
 		$zoneFileBody.=$hostName." IN A ".$record["ip"]."\n";
 	}
-	$zoneFileBody.=$GLOBALS["FIXED"];
+	$zoneFileBody.=$GLOBALS["FIXED"]."\n";
 	foreach($IP as $hostName=>$record){
 		//$zoneFileBody.="\$ORIGIN ".$hostName.".".$CFG["ORIGIN"]."\n";
 		$zoneFileBody.=" IN MX 10 ".$hostName.".".$CFG["ORIGIN"]."\n";
